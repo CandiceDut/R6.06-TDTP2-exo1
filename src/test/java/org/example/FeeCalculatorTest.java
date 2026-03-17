@@ -33,6 +33,19 @@ class FeeCalculatorTest {
     }
 
     @Test
+    public void for_age_under_14_WEEK_should_calculate_0()
+    {
+        //GIVEN
+        Visitor child = new Visitor(10);
+
+        //WHEN
+        double actualFee = FeeCalculator.calculateFee(child, TicketType.WEEK);
+
+        //THEN
+        assertThat(actualFee).isEqualTo(0.0);
+    }
+
+    @Test
     public void for_age_above_14_HALF_DAY_should_calculate_60()
     {
         //GIVEN
@@ -43,5 +56,31 @@ class FeeCalculatorTest {
 
         //THEN
         assertThat(actualFee).isEqualTo(60.0);
+    }
+
+    @Test
+    public void for_age_above_14_FULL_DAY_should_calculate_120()
+    {
+        //GIVEN
+        Visitor adult = new Visitor(20);
+
+        //WHEN
+        double actualFee = FeeCalculator.calculateFee(adult, TicketType.FULL_DAY);
+
+        //THEN
+        assertThat(actualFee).isEqualTo(120.0);
+    }
+
+    @Test
+    public void for_age_above_14_WEEK_should_calculate_0()
+    {
+        //GIVEN
+        Visitor adult = new Visitor(20);
+
+        //WHEN
+        double actualFee = FeeCalculator.calculateFee(adult, TicketType.WEEK);
+
+        //THEN
+        assertThat(actualFee).isEqualTo(0.0);
     }
 }
