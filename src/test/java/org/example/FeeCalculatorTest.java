@@ -2,6 +2,7 @@ package org.example;
 
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.catchException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,16 +34,17 @@ class FeeCalculatorTest {
     }
 
     @Test
-    public void for_age_under_14_WEEK_should_calculate_0()
+    public void should_throw_exception_when_ticketType_not_supported_for_age_under_14()
     {
         //GIVEN
-        Visitor child = new Visitor(10);
-
-        //WHEN
-        double actualFee = FeeCalculator.calculateFee(child, TicketType.WEEK);
-
-        //THEN
-        assertThat(actualFee).isEqualTo(0.0);
+        Visitor adult = new Visitor(10);
+        // WHEN
+        IllegalArgumentException erreur = (IllegalArgumentException)catchException (()->FeeCalculator.calculateFee(adult, TicketType.WEEK) );
+        // THEN
+        assertThat(erreur)
+                .isNotNull()
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("TicketType not supported");
     }
 
     @Test
@@ -72,15 +74,17 @@ class FeeCalculatorTest {
     }
 
     @Test
-    public void for_age_above_14_WEEK_should_calculate_0()
+    public void should_throw_exception_when_ticketType_not_supported_for_age_above_14()
     {
         //GIVEN
         Visitor adult = new Visitor(20);
-
-        //WHEN
-        double actualFee = FeeCalculator.calculateFee(adult, TicketType.WEEK);
-
-        //THEN
-        assertThat(actualFee).isEqualTo(0.0);
+        // WHEN
+        IllegalArgumentException erreur = (IllegalArgumentException)catchException (()->FeeCalculator.calculateFee(adult, TicketType.WEEK) );
+        // THEN
+        assertThat(erreur)
+                .isNotNull()
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("TicketType not supported");
     }
+
 }
