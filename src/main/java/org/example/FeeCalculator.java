@@ -1,19 +1,33 @@
 package org.example;
 
+import java.util.List;
+
 public class FeeCalculator {
+    private static List<FeeStrategy> strategies = List.of(
+            new ChildFeeStrategy(),
+            new AdultFeeStrategy()
+    );
 
     public static double calculateFee(Visitor visitor, TicketType ticketType) {
         double fee = 0;
+        FeeStrategy strategy;
 
-        // calculate price for adults
-        if (visitor.getAge() > 14) {
-            fee = new AdultFeeStrategy().calculate(ticketType);
+        int i = 0;
+        boolean trouve = false;
+        int cpteurStrategies = 0;
+
+        while(i < strategies.size()){
+            strategy = strategies.get(i);
+            if(strategy.accept(visitor)){
+                fee = strategy.calculate(ticketType);
+                cpteurStrategies++;
+            }
+            i++;
+        }
+        if(cpteurStrategies != 1){
+            throw new IllegalStateException();
         }
 
-        // calculate price for children
-        if (visitor.getAge() <= 14) {
-            fee = new ChildFeeStrategy().calculate(ticketType);
-        }
         return fee;
     }
 
